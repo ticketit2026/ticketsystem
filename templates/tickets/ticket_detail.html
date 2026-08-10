@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load jalali_tags %}
+{% block title %}تیکت #{{ ticket.id }}{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <h4>#{{ ticket.id }} — {{ ticket.title }}</h4>
+          <div>
+            <span class="badge badge-status-{{ ticket.status }}">{{ ticket.get_status_display }}</span>
+            <span class="badge badge-priority-{{ ticket.priority }}">{{ ticket.get_priority_display }}</span>
+          </div>
+        </div>
+        <div class="mb-2"><strong>کاربر:</strong> {{ ticket.user.full_name|default:ticket.user.username }}</div>
+        <div class="mb-2"><strong>دسته‌بندی:</strong> {{ ticket.get_category_display }}</div>
+        <div class="mb-2"><strong>تاریخ ثبت:</strong> {{ ticket.created_at|to_jalali }}</div>
+        <div class="mb-2"><strong>آخرین بروزرسانی:</strong> {{ ticket.updated_at|to_jalali }}</div>
+        <hr>
+        <h6>توضیحات:</h6>
+        <div class="ticket-desc">{{ ticket.description }}</div>
+        {% if ticket.admin_note %}
+        <hr>
+        <h6>یادداشت ادمین:</h6>
+        <div class="ticket-desc bg-warning-subtle">{{ ticket.admin_note }}</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {% if user.is_admin %}
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-body">
+        <h5>مدیریت تیکت</h5>
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label">وضعیت</label>
+            <select name="status" class="form-select">
+              {% for val, label in STATUS_CHOICES %}
+              <option value="{{ val }}" {% if ticket.status == val %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">یادداشت ادمین</label>
+            <textarea name="admin_note" class="form-control" rows="4">{{ ticket.admin_note|default:'' }}</textarea>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">ذخیره تغییرات</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+<a href="{% url 'home' %}" class="btn btn-outline-secondary mt-3">بازگشت</a>
+{% endblock %}

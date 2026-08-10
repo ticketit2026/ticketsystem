@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}تیکت جدید{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-body p-4">
+        <h4 class="mb-4">ثبت تیکت جدید</h4>
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label fw-medium">عنوان مشکل *</label>
+            <input type="text" name="title" class="form-control" required maxlength="255">
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-medium">دسته‌بندی</label>
+              <select name="category" class="form-select">
+                {% for val, label in CATEGORY_CHOICES %}
+                <option value="{{ val }}" {% if val == 'other' %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-medium">اولویت</label>
+              <select name="priority" class="form-select">
+                {% for val, label in PRIORITY_CHOICES %}
+                <option value="{{ val }}" {% if val == 'medium' %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-medium">توضیحات کامل *</label>
+            <textarea name="description" class="form-control" rows="6" required></textarea>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">ثبت تیکت</button>
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary">انصراف</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

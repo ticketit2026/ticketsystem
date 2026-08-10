@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}ورود - سیستم تیکت{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card login-card shadow">
+      <div class="card-body p-4">
+        <h4 class="text-center mb-4"><i class="bi bi-shield-lock"></i> ورود به سیستم تیکت</h4>
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label">نام کاربری</label>
+            <input type="text" name="username" class="form-control" required autofocus>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">رمز عبور</label>
+            <input type="password" name="password" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">ورود</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
