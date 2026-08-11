@@ -1,9 +1,9 @@
 services:
   - type: web
-    name: ticketing-system
+    name: it-ticket-system
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: "gunicorn ticketing-system.wsgi:application"
+    startCommand: "gunicorn it-ticket-system.wsgi:application"
     envVars:
       - key: SECRET_KEY
         generateValue: true
